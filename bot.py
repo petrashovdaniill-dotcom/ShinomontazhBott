@@ -267,12 +267,13 @@ conv_handler = ConversationHandler(
     allow_reentry=True
 )
 
-app.add_handler(CommandHandler("start",start))
+app.add_handler(CommandHandler("start", start))
 
-# Меню работает всегда
-app.add_handler(CallbackQueryHandler(button_handler,pattern="^(price|address|contacts|menu)$"))
-
-# Только кнопка записи запускает процесс заполнения
+# Сначала запись
 app.add_handler(conv_handler)
+
+# Потом остальные кнопки меню
+app.add_handler(
+    CallbackQueryHandler(button_handler,pattern="^(price|address|contacts|menu)$"))
 
 app.run_polling()
