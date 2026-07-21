@@ -45,7 +45,36 @@ def save_order(name, phone, car, time):
 
     conn.commit()
     conn.close()
+async def orders(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
+    conn = sqlite3.connect("orders.db")
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT name, phone, car, time FROM orders"
+    )
+
+    rows = cursor.fetchall()
+
+    conn.close()
+
+    if not rows:
+        await update.message.reply_text(
+            "📋 Заявок пока нет."
+        )
+        return
+
+    text = "📋 Все заявки:\n\n"
+
+    for i, row in enumerate(rows, start=1):
+        text += (
+            f"{i}) 👤 {row[0]}\n"
+            f"📞 {row[1]}\n"
+            f"🚗 {row[2]}\n"
+            f"🕒 {row[3]}\n\n"
+        )
+
+    await update.message.reply_text(text)
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     keyboard = [
@@ -331,6 +360,7 @@ conv_handler = ConversationHandler(
 )
 
 app.add_handler(CommandHandler("start", start))
+app.add_handler(CommandHandler("orders", orders))
 
 # Сначала запись
 app.add_handler(conv_handler)
