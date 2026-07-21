@@ -130,6 +130,10 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "⏰ Ежедневно 09:00–20:00"
         )
 
+    elif query.data == "menu":
+
+        await start(update, context)
+
 async def get_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     context.user_data["name"] = update.message.text
@@ -177,7 +181,7 @@ async def get_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     message = (
-        "🚗 НОВАЯ ЗАЯВКА!\n\n"
+        "🚗 НОВАЯ ЗАЯВКА\n\n"
         f"👤 Имя: {name}\n"
         f"📞 Телефон: {phone}\n"
         f"🚘 Авто: {car}\n"
@@ -189,9 +193,27 @@ async def get_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text=message
     )
 
+    keyboard = [
+        [
+            InlineKeyboardButton(
+                "🔧 Новая запись",
+                callback_data="record"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                "🏠 Главное меню",
+                callback_data="menu"
+            )
+        ]
+    ]
+
     await update.message.reply_text(
-        "✅ Ваша заявка принята!\n\n"
-        "Мы скоро свяжемся с вами."
+        "✅ Ваша запись создана!\n\n"
+        f"🚗 Автомобиль: {car}\n"
+        f"🕒 Время: {time}\n\n"
+        "Спасибо за обращение!",
+        reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
     return ConversationHandler.END
@@ -238,4 +260,4 @@ app.add_handler(
     conv_handler
 )
 
-app.run_polling()
+app.run_polling()!
