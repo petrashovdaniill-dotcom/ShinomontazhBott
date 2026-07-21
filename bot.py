@@ -132,7 +132,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif query.data == "menu":
 
-    keyboard = [
+        keyboard = [
         [
             InlineKeyboardButton(
                 "🔧 Записаться",
