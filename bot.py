@@ -360,7 +360,6 @@ conv_handler = ConversationHandler(
 )
 
 app.add_handler(CommandHandler("start", start))
-app.add_handler(CommandHandler("orders", orders))
 
 # Сначала запись
 app.add_handler(conv_handler)
