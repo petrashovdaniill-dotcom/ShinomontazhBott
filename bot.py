@@ -46,8 +46,6 @@ def save_order(name, phone, car, time):
     conn.commit()
     conn.close()
 async def orders(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
-    async def orders(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     conn = sqlite3.connect("orders.db")
     cursor = conn.cursor()
