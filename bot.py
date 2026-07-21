@@ -291,7 +291,7 @@ conv_handler = ConversationHandler(
 
     },
 
-    fallbacks=[]
+    fallbacks=[],
     allow_reentry=True
 )
 
