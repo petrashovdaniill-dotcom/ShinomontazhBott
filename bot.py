@@ -96,7 +96,8 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     query = update.callback_query
     await query.answer()
-
+    print(query.data)
+    
     if query.data == "record":
 
         await query.message.reply_text(
