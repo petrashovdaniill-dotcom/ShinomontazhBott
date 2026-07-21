@@ -97,6 +97,17 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
+    if "info_msg" in context.user_data:
+        try:
+            await context.bot.delete_message(
+                chat_id=query.message.chat_id,
+                message_id=context.user_data["info_msg"]
+            )
+        except:
+            pass
+
+        context.user_data.pop("info_msg", None)
+
     if query.data != "record" and "record_msg" in context.user_data:
         try:
             await context.bot.delete_message(
@@ -132,18 +143,22 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif query.data == "address":
 
-        await query.message.reply_text(
+        msg = await query.message.reply_text(
             "📍 Наш адрес:\n"
             "Укажите адрес шиномонтажа"
         )
 
+        context.user_data["info_msg"] = msg.message_id
+    
     elif query.data == "contacts":
 
-        await query.message.reply_text(
+        msg = await query.message.reply_text(
             "📞 Контакты:\n\n"
             "+7 (999) 123-45-67\n\n"
             "⏰ Ежедневно 09:00–20:00"
         )
+
+        context.user_data["info_msg"] = msg.message_id
 
     elif query.data == "menu":
 
