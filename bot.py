@@ -176,7 +176,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         msg = await query.message.reply_text(
             "📍 Наш адрес:\n"
-            "Семипалатинская 16"
+            "Семипалатинская 17"
         )
 
         context.user_data["info_msg"] = msg.message_id
