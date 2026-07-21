@@ -1,5 +1,5 @@
 import sqlite3
-import os 
+import os
 
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
@@ -49,14 +49,47 @@ def save_order(name, phone, car, time):
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     keyboard = [
-        [InlineKeyboardButton("🔧 Записаться", callback_data="record")],
-        [InlineKeyboardButton("💰 Цены", callback_data="price")],
-        [InlineKeyboardButton("📍 Адрес", callback_data="address")]
+        [
+            InlineKeyboardButton(
+                "🔧 Записаться",
+                callback_data="record"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                "💰 Прайс",
+                callback_data="price"
+            ),
+            InlineKeyboardButton(
+                "📍 Адрес",
+                callback_data="address"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                "📞 Контакты",
+                callback_data="contacts"
+            )
+        ]
     ]
 
+    text = (
+        "👋 Добро пожаловать!\n\n"
+        "🚗 *Шиномонтаж «АвтоМастер»*\n\n"
+        "══════════════\n"
+        "🔧 Быстрая запись\n"
+        "💰 Актуальные цены\n"
+        "📍 Как нас найти\n"
+        "📞 Связаться с нами\n"
+        "══════════════\n\n"
+        "⏰ Работаем ежедневно:\n"
+        "09:00 — 20:00"
+    )
+
     await update.message.reply_text(
-        "🚗 Добро пожаловать в шиномонтаж!\n\nВыберите действие:",
-        reply_markup=InlineKeyboardMarkup(keyboard)
+        text,
+        reply_markup=InlineKeyboardMarkup(keyboard),
+        parse_mode="Markdown"
     )
 
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -65,20 +98,36 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
 
     if query.data == "record":
-        await query.message.reply_text("👤 Напишите ваше имя:")
+
+        await query.message.reply_text(
+            "👤 Напишите ваше имя:"
+        )
+
         return NAME
 
     elif query.data == "price":
+
         await query.message.reply_text(
-            "💰 Цены:\n\n"
+            "💰 Наш прайс:\n\n"
             "🚗 R14 — 1000₽\n"
             "🚙 R15-R16 — 1500₽\n"
-            "🚘 R17-R18 — 2000₽"
+            "🚘 R17-R18 — 2000₽\n\n"
+            "Балансировка входит в стоимость."
         )
 
     elif query.data == "address":
+
         await query.message.reply_text(
-            "📍 Наш адрес:\nУкажите адрес шиномонтажа"
+            "📍 Наш адрес:\n"
+            "Укажите адрес шиномонтажа"
+        )
+
+    elif query.data == "contacts":
+
+        await query.message.reply_text(
+            "📞 Контакты:\n\n"
+            "+7 (999) 123-45-67\n\n"
+            "⏰ Ежедневно 09:00–20:00"
         )
 
 async def get_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -106,7 +155,7 @@ async def get_car(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["car"] = update.message.text
 
     await update.message.reply_text(
-        "🕒 В какое время удобно приехать?"
+        "🕒 В какое время хотите приехать?"
     )
 
     return TIME
@@ -120,7 +169,12 @@ async def get_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
     car = context.user_data["car"]
     time = context.user_data["time"]
 
-    save_order(name, phone, car, time)
+    save_order(
+        name,
+        phone,
+        car,
+        time
+    )
 
     message = (
         "🚗 НОВАЯ ЗАЯВКА!\n\n"
@@ -136,7 +190,8 @@ async def get_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     await update.message.reply_text(
-        "✅ Спасибо! Ваша заявка принята."
+        "✅ Ваша заявка принята!\n\n"
+        "Мы скоро свяжемся с вами."
     )
 
     return ConversationHandler.END
@@ -146,11 +201,13 @@ init_db()
 app = Application.builder().token(TOKEN).build()
 
 conv_handler = ConversationHandler(
+
     entry_points=[
         CallbackQueryHandler(button_handler)
     ],
 
     states={
+
         NAME: [
             MessageHandler(filters.TEXT, get_name)
         ],
@@ -166,12 +223,19 @@ conv_handler = ConversationHandler(
         TIME: [
             MessageHandler(filters.TEXT, get_time)
         ],
+
     },
 
     fallbacks=[]
+
 )
 
-app.add_handler(CommandHandler("start", start))
-app.add_handler(conv_handler)
+app.add_handler(
+    CommandHandler("start", start)
+)
+
+app.add_handler(
+    conv_handler
+)
 
 app.run_polling()
