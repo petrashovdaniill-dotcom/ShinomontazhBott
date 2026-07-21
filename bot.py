@@ -1,4 +1,5 @@
 import sqlite3
+import os 
 
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
@@ -11,8 +12,8 @@ from telegram.ext import (
     ConversationHandler
 )
 
-TOKEN = "8641697563:AAGX1bN8f2I-OZNodEp8KAHEi8Eo1MfJj8k"
-ADMIN_ID = 5069557666
+TOKEN = os.getenv("TOKEN")
+ADMIN_ID = int(os.getenv("ADMIN_ID"))
 
 NAME, PHONE, CAR, TIME = range(4)
 
