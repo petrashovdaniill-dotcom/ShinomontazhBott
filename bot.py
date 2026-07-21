@@ -48,9 +48,6 @@ def save_order(name, phone, car, time):
 async def orders(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     async def orders(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
-    await update.message.reply_text("Команда работает")
-    return
     
     conn = sqlite3.connect("orders.db")
     cursor = conn.cursor()
