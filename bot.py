@@ -225,25 +225,40 @@ app = Application.builder().token(TOKEN).build()
 conv_handler = ConversationHandler(
 
     entry_points=[
-        CallbackQueryHandler(button_handler)
+        CallbackQueryHandler(
+            button_handler,
+            pattern="^record$"
+        )
     ],
 
     states={
 
         NAME: [
-            MessageHandler(filters.TEXT, get_name)
+            MessageHandler(
+                filters.TEXT,
+                get_name
+            )
         ],
 
         PHONE: [
-            MessageHandler(filters.TEXT, get_phone)
+            MessageHandler(
+                filters.TEXT,
+                get_phone
+            )
         ],
 
         CAR: [
-            MessageHandler(filters.TEXT, get_car)
+            MessageHandler(
+                filters.TEXT,
+                get_car
+            )
         ],
 
         TIME: [
-            MessageHandler(filters.TEXT, get_time)
+            MessageHandler(
+                filters.TEXT,
+                get_time
+            )
         ],
 
     },
@@ -253,9 +268,21 @@ conv_handler = ConversationHandler(
 )
 
 app.add_handler(
-    CommandHandler("start", start)
+    CommandHandler(
+        "start",
+        start
+    )
 )
 
+# Меню работает всегда
+app.add_handler(
+    CallbackQueryHandler(
+        button_handler,
+        pattern="^(price|address|contacts|menu)$"
+    )
+)
+
+# Только кнопка записи запускает процесс заполнения
 app.add_handler(
     conv_handler
 )
