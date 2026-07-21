@@ -264,7 +264,6 @@ conv_handler = ConversationHandler(
     },
 
     fallbacks=[]
-    allow_reentry=True
 )
 
 app.add_handler(CommandHandler("start",start))
