@@ -96,13 +96,26 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     query = update.callback_query
     await query.answer()
+
+    if query.data != "record" and "record_msg" in context.user_data:
+    try:
+        await context.bot.delete_message(
+            chat_id=query.message.chat_id,
+            message_id=context.user_data["record_msg"]
+        )
+    except:
+        pass
+
+    context.user_data.pop("record_msg", None)
     
     if query.data == "record":
 
-        await query.message.reply_text(
+        msg = await query.message.reply_text(
             "👤 Напишите ваше имя:"
         )
 
+        context.user_data["record_msg"] = msg.message_id
+        
         return NAME
 
     elif query.data == "price":
