@@ -132,7 +132,37 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif query.data == "menu":
 
-        await start(update, context)
+        elif query.data == "menu":
+
+    keyboard = [
+        [
+            InlineKeyboardButton(
+                "🔧 Записаться",
+                callback_data="record"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                "💰 Прайс",
+                callback_data="price"
+            ),
+            InlineKeyboardButton(
+                "📍 Адрес",
+                callback_data="address"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                "📞 Контакты",
+                callback_data="contacts"
+            )
+        ]
+    ]
+
+    await query.message.reply_text(
+        "🏠 Главное меню:",
+        reply_markup=InlineKeyboardMarkup(keyboard)
+    )
 
 async def get_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
