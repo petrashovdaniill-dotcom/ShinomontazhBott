@@ -267,24 +267,12 @@ conv_handler = ConversationHandler(
 
 )
 
-app.add_handler(
-    CommandHandler(
-        "start",
-        start
-    )
-)
+app.add_handler(CommandHandler("start",start))
 
 # Меню работает всегда
-app.add_handler(
-    CallbackQueryHandler(
-        button_handler,
-        pattern="^(price|address|contacts|menu)$"
-    )
-)
+app.add_handler(CallbackQueryHandler(button_handler,pattern="^(price|address|contacts|menu)$"))
 
 # Только кнопка записи запускает процесс заполнения
-app.add_handler(
-    conv_handler
-)
+app.add_handler(conv_handler)
 
 app.run_polling()
