@@ -291,12 +291,7 @@ conv_handler = ConversationHandler(
 
     },
 
-    fallbacks=[
-        CallbackQueryHandler(
-            button_handler,
-            pattern="^(price|address|contacts|menu)$"
-    )
-]
+    fallbacks=[]
     allow_reentry=True
 )
 
