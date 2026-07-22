@@ -165,7 +165,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "🚗 R14 — 1000₽\n"
             "🚙 R15-R16 — 1500₽\n"
             "🚘 R17-R18 — 2000₽\n\n"
-            "Балансировка входит в стоимость."
+            "Балансировка входит в стоимось."
         )
 
         context.user_data["info_msg"] = msg.message_id
