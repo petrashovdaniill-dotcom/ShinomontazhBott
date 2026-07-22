@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from datetime import datetime, timedelta
 
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
@@ -15,7 +16,7 @@ from telegram.ext import (
 TOKEN = os.getenv("TOKEN")
 ADMIN_ID = int(os.getenv("ADMIN_ID"))
 
-NAME, PHONE, CAR, TIME = range(4)
+NAME, PHONE, CAR, DATE, TIME = range(5)
 
 def init_db():
     conn = sqlite3.connect("orders.db")
@@ -245,11 +246,24 @@ async def get_car(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     context.user_data["car"] = update.message.text
 
+    keyboard = []
+
+    for i in range(7):
+        date = datetime.now() + timedelta(days=i)
+
+        keyboard.append([
+            InlineKeyboardButton(
+                date.strftime("%d.%m"),
+                callback_data=f"date_{date.strftime('%Y-%m-%d')}"
+            )
+        ])
+
     await update.message.reply_text(
-        "🕒 В какое время хотите приехать?"
+        "📅 Выберите дату:",
+        reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
-    return TIME
+    return DATE
 
 async def get_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
