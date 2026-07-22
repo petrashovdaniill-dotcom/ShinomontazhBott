@@ -159,6 +159,31 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         return NAME
 
+    elif query.data.startswith("date_"):
+
+        selected_date = query.data.replace("date_", "")
+
+        context.user_data["date"] = selected_date
+
+        keyboard = []
+
+        for hour in range(9, 20):
+            keyboard.append([
+                InlineKeyboardButton(
+                    f"{hour}:00",
+                    callback_data=f"time_{hour}:00"
+                ),
+                InlineKeyboardButton(
+                    f"{hour}:30",
+                    callback_data=f"time_{hour}:30"
+                )
+            ])
+
+        await query.message.reply_text(
+            "🕒 Выберите время:",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+    
     elif query.data == "price":
 
         msg = await query.message.reply_text(
